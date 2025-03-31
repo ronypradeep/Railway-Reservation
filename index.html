@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Welcome to Railway Reservation System</h2>
+    <p>Book your train tickets online with ease.</p>
+
+    {% if 'loggedin' in session %}
+        <p>Welcome back, {{ session['username'] }}!</p>
+        <p><a href="{{ url_for('search') }}" class="btn">Book a Ticket Now</a></p>
+    {% else %}
+        <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a> to book tickets.</p>
+    {% endif %}
+{% endblock %}

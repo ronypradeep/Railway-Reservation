@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Search Trains</h2>
+
+    <form method="post" action="{{ url_for('search') }}">
+        <div>
+            <label>From:</label>
+            <input type="text" name="source" required>
+        </div>
+        <div>
+            <label>To:</label>
+            <input type="text" name="destination" required>
+        </div>
+        <div>
+            <label>Date of Journey:</label>
+            <!-- Keep this as is if you're using the context processor -->
+            <input type="date" name="date" required min="{{ now.strftime('%Y-%m-%d') }}">
+        </div>
+        <button type="submit">Search Trains</button>
+    </form>
+
+    {% if trains %}
+        <h3>Available Trains</h3>
+        <table>
+            <tr>
+                <th>Train Name</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Seats</th>
+                <th>Fare</th>
+                <th>Action</th>
+            </tr>
+            {% for train in trains %}
+            <tr>
+                <td>{{ train.train_name }}</td>
+                <!-- Remove .strftime() since we're now passing formatted strings -->
+                <td>{{ train.departure_time }}</td>
+                <td>{{ train.arrival_time }}</td>
+                <td>{{ train.seats_available }}</td>
+                <td>₹{{ train.fare }}</td>
+                <td>
+                    <!-- Change request.form.date to date variable -->
+                    <a href="{{ url_for('booking', train_id=train.train_id, date=date) }}" class="btn">
+                        Book Now
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% elif request.method == 'POST' %}
+        <p>No trains available for this route.</p>
+    {% endif %}
+{% endblock %}

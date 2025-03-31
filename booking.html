@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Book Ticket</h2>
+
+    <div class="train-info">
+        <h3>{{ train.train_name }}</h3>
+        <p>{{ train.source_station }} to {{ train.destination_station }}</p>
+        <!-- Remove .strftime() since times are pre-formatted -->
+        <p>Departure: {{ train.departure_time }}</p>
+        <p>Arrival: {{ train.arrival_time }}</p>
+        <p>Available Seats: {{ train.seats_available }}</p>
+        <p>Fare per passenger: ₹{{ train.fare }}</p>
+    </div>
+
+    <form method="post" action="{{ url_for('booking', train_id=train.train_id, date=date) }}">
+        <div>
+            <label>Number of Passengers:</label>
+            <input type="number" 
+                   name="passengers" 
+                   min="1" 
+                   max="{{ train.seats_available }}" 
+                   required
+                   oninput="calculateTotal()">
+        </div>
+        <div>
+            <label>Total Fare:</label>
+            <span id="totalFare">₹0.00</span>
+        </div>
+        <div>
+            <label>Journey Date:</label>
+            <input type="date" value="{{ date }}" readonly>
+        </div>
+        <button type="submit">Confirm Booking</button>
+    </form>
+
+    <script>
+        function calculateTotal() {
+            const passengers = document.querySelector('input[name="passengers"]').value;
+            const farePerPassenger = {{ train.fare }};
+            document.getElementById('totalFare').textContent = 
+                '₹' + (passengers * farePerPassenger).toFixed(2);
+        }
+        // Calculate initial total when page loads
+        calculateTotal();
+    </script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>My Bookings</h2>
+
+    {% if bookings %}
+        <table>
+            <tr>
+                <th>Train</th>
+                <th>Route</th>
+                <th>Journey Date</th>
+                <th>Passengers</th>
+                <th>Total Fare</th>
+                <th>Status</th>
+            </tr>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.train_name }}</td>
+                <td>{{ booking.source_station }} to {{ booking.destination_station }}</td>
+                <td>{{ booking.departure_time }}</td>
+                <td>{{ booking.arrival_time }}</td>
+                <td>{{ booking.passengers }}</td>
+                <td>₹{{ booking.total_fare }}</td>
+                <td>{{ booking.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>You have no bookings yet. <a href="{{ url_for('search') }}">Book a ticket now!</a></p>
+    {% endif %}
+{% endblock %}
