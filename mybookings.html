@@ -8,15 +8,18 @@
             <tr>
                 <th>Train</th>
                 <th>Route</th>
-                <th>Journey Date</th>
+                <th>Date</th>
+                <th>Departure time</th>
+                <th>Arrival time</th>
                 <th>Passengers</th>
-                <th>Total Fare</th>
+                <th>Total fare</th>
                 <th>Status</th>
             </tr>
             {% for booking in bookings %}
             <tr>
                 <td>{{ booking.train_name }}</td>
                 <td>{{ booking.source_station }} to {{ booking.destination_station }}</td>
+                <td>{{booking.journey_date}}</td>
                 <td>{{ booking.departure_time }}</td>
                 <td>{{ booking.arrival_time }}</td>
                 <td>{{ booking.passengers }}</td>
